@@ -22,5 +22,9 @@ public class RecordService {
         recordRepository.save(records);
     }
 
+    public void removeAll(){
+        recordRepository.deleteAll();
+    }
+
 
 }

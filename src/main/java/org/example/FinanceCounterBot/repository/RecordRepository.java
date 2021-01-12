@@ -12,6 +12,6 @@ public interface RecordRepository extends JpaRepository<Records, Long> {
 
     Records save(Records records);
 
-
+    void deleteAll();
 
 }
