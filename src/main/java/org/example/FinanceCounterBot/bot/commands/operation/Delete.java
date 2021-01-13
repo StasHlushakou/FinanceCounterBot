@@ -1,7 +1,6 @@
 package org.example.FinanceCounterBot.bot.commands.operation;
 
 import org.example.FinanceCounterBot.bot.commands.AbstractCommand;
-import org.example.FinanceCounterBot.entity.Records;
 import org.example.FinanceCounterBot.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

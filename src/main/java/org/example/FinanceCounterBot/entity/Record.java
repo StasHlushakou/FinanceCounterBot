@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class Records {
+public class Record {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +25,10 @@ public class Records {
     @Column
     private String description;
 
-    public Records() {
+    public Record() {
     }
 
-    public Records(Long id, Long userId, Double sum, Currency currency, Date date, String description) {
+    public Record(Long id, Long userId, Double sum, Currency currency, Date date, String description) {
         this.id = id;
         this.userId = userId;
         this.sum = sum;

@@ -1,16 +1,16 @@
 package org.example.FinanceCounterBot.repository;
 
 
-import org.example.FinanceCounterBot.entity.Records;
+import org.example.FinanceCounterBot.entity.Record;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface RecordRepository extends JpaRepository<Records, Long> {
+public interface RecordRepository extends JpaRepository<Record, Long> {
 
-    List<Records> findByUserId(Long userId);
+    List<Record> findByUserId(Long userId);
 
-    Records save(Records records);
+    Record save(Record record);
 
     void deleteAll();
 

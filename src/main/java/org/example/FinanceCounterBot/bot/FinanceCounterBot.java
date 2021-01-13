@@ -5,7 +5,7 @@ import org.example.FinanceCounterBot.bot.commands.operation.History;
 import org.example.FinanceCounterBot.bot.commands.service.Help;
 import org.example.FinanceCounterBot.bot.commands.service.Start;
 import org.example.FinanceCounterBot.entity.Currency;
-import org.example.FinanceCounterBot.entity.Records;
+import org.example.FinanceCounterBot.entity.Record;
 import org.example.FinanceCounterBot.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +16,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.Date;
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class FinanceCounterBot extends TelegramLongPollingCommandBot {
@@ -53,19 +54,39 @@ public class FinanceCounterBot extends TelegramLongPollingCommandBot {
         // We check if the update has a message and the message has text
         if (update.hasMessage() && update.getMessage().hasText()) {
 
-            String input = update.getMessage().getText();
+            String inputText = update.getMessage().getText();
             SendMessage message = new SendMessage();
             message.setChatId(update.getMessage().getChatId().toString());
             Long userId = update.getMessage().getChatId();
 
-            Records records = new Records();
-            records.setUserId(userId);
-            records.setCurrency(Currency.RUBLE);
-            records.setDescription("/// " + update.getMessage().getText()+ " ///" );
-            records.setDate(new Date(new Long (update.getMessage().getDate()) * 1000));
-            records.setSum(0.0);
-            recordService.addRecords(records);
-            message.setText("ok");
+            inputText.trim();
+            if (inputText.matches("\\d+[.]{0,1}\\d*\\s+[рд$]\\s+\\S*")){
+                Record record = new Record();
+                record.setUserId(userId);
+
+                String[] words = inputText.split("\\s+");
+
+                record.setSum(new Double(words[0]));
+
+                if (words[1].equals("р") || words[1].equals("д")){
+                    record.setCurrency(Currency.RUBLE);
+                } else {
+                    record.setCurrency(Currency.DOLLAR);
+                }
+
+                StringBuilder stringBuilder = new StringBuilder("");
+                for(int i = 2; i < words.length; i++){
+                    stringBuilder.append(words[i] + " ");
+                }
+                record.setDescription(stringBuilder.toString());
+
+                record.setDate(new Date(new Long (update.getMessage().getDate()) * 1000));
+
+                recordService.addRecord(record);
+                message.setText("ок");
+            } else{
+                message.setText("Неверный формат строки\nПравильный формат : [сумма] [уазатель валюты(р/д/$)] [описание(опционально)]");
+            }
 
             try {
                 execute(message); // Call method to send the message

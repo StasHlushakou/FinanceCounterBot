@@ -1,8 +1,7 @@
 package org.example.FinanceCounterBot.bot.commands.operation;
 
 import org.example.FinanceCounterBot.bot.commands.AbstractCommand;
-import org.example.FinanceCounterBot.bot.commands.service.Help;
-import org.example.FinanceCounterBot.entity.Records;
+import org.example.FinanceCounterBot.entity.Record;
 import org.example.FinanceCounterBot.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,11 +29,11 @@ public class History extends AbstractCommand {
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
 
 
-        List<Records> recordsList= recordService.getByUserId(new Long(user.getId()) );
+        List<Record> recordList = recordService.getByUserId(new Long(user.getId()) );
 
         StringBuilder stringBuilder = new StringBuilder("");
-        for (Records records : recordsList){
-            stringBuilder.append(records.getDate().toString() + " " + records.getDescription() + "\n");
+        for (Record record : recordList){
+            stringBuilder.append(record.getDate().toString() + " " + record.getDescription() + "\n");
         }
 
         String result = stringBuilder.toString();
