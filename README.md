@@ -1,4 +1,4 @@
-# FinanceCounterBot !
+# FinanceCounterBot
 
 ### @finance_counter_bot
 
