@@ -2,6 +2,7 @@ package org.example.FinanceCounterBot.bot;
 
 import org.example.FinanceCounterBot.bot.commands.operation.Delete;
 import org.example.FinanceCounterBot.bot.commands.operation.History;
+import org.example.FinanceCounterBot.bot.commands.operation.Sum;
 import org.example.FinanceCounterBot.bot.commands.service.Help;
 import org.example.FinanceCounterBot.bot.commands.service.Start;
 import org.example.FinanceCounterBot.entity.Currency;
@@ -33,6 +34,8 @@ public class FinanceCounterBot extends TelegramLongPollingCommandBot {
     History history;
     @Autowired
     Delete delete;
+    @Autowired
+    Sum sum;
 
     @Value("${telegram.bot.name}")
     private String BOT_NAME;
@@ -60,7 +63,8 @@ public class FinanceCounterBot extends TelegramLongPollingCommandBot {
             Long userId = update.getMessage().getChatId();
 
             inputText.trim();
-            if (inputText.matches("\\d+[.]{0,1}\\d*\\s+[рд$]\\s+\\S*")){
+            if (inputText.matches("\\d+[.]{0,1}\\d*\\s+[рд$]\\s+.*") ||
+                    inputText.matches("\\d+[.]{0,1}\\d*\\s+[рд$]")){
                 Record record = new Record();
                 record.setUserId(userId);
 
@@ -68,15 +72,15 @@ public class FinanceCounterBot extends TelegramLongPollingCommandBot {
 
                 record.setSum(new Double(words[0]));
 
-                if (words[1].equals("р") || words[1].equals("д")){
-                    record.setCurrency(Currency.RUBLE);
+                if (words[1].equals("р")){
+                    record.setCurrency(Currency.BYN);
                 } else {
-                    record.setCurrency(Currency.DOLLAR);
+                    record.setCurrency(Currency.USD);
                 }
 
                 StringBuilder stringBuilder = new StringBuilder("");
                 for(int i = 2; i < words.length; i++){
-                    stringBuilder.append(words[i] + " ");
+                    stringBuilder.append(words[i]).append(" ");
                 }
                 record.setDescription(stringBuilder.toString());
 
@@ -85,7 +89,9 @@ public class FinanceCounterBot extends TelegramLongPollingCommandBot {
                 recordService.addRecord(record);
                 message.setText("ок");
             } else{
-                message.setText("Неверный формат строки\nПравильный формат : [сумма] [уазатель валюты(р/д/$)] [описание(опционально)]");
+                message.setText("Неверный формат строки.\n" +
+                        "Правильный формат : [сумма] [уазатель валюты(р/д/$)] [описание(опционально)]\n" +
+                        "Все значения должны быть разделены пробелами");
             }
 
             try {
@@ -103,6 +109,7 @@ public class FinanceCounterBot extends TelegramLongPollingCommandBot {
         register(help);
         register(history);
         register(delete);
+        register(sum);
 
     }
 

@@ -27,6 +27,13 @@ public class Help extends AbstractCommand {
         }
 
 
-        sendAnswer(absSender, chat.getId(),"Список команд:\n/start\n/help\n/history\n/delete");
+        sendAnswer(absSender, chat.getId(),
+                "Формат ввода данных: [сумма] [уазатель валюты(р/д/$)] [описание(опционально)]\n" +
+                "Все значения должны быть разделены пробелами\n" +
+                "Список команд:\n" +
+                        "/help - помощь\n" +
+                        "/history - история Ваших затрат\n" +
+                        "/sum - общая сумма Ваших затрат\n" +
+                        "/delete - удалить всю Вашу историю");
     }
 }

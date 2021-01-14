@@ -22,8 +22,8 @@ public class RecordService {
         recordRepository.save(record);
     }
 
-    public void removeAll(){
-        recordRepository.deleteAll();
+    public void removeAllByUserId(Long userId){
+        recordRepository.deleteAllByUserId(userId);
     }
 
 

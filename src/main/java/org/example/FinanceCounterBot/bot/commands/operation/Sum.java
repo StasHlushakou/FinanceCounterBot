@@ -1,6 +1,7 @@
 package org.example.FinanceCounterBot.bot.commands.operation;
 
 import org.example.FinanceCounterBot.bot.commands.AbstractCommand;
+import org.example.FinanceCounterBot.entity.Currency;
 import org.example.FinanceCounterBot.entity.Record;
 import org.example.FinanceCounterBot.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,21 +10,20 @@ import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Component
-public class History extends AbstractCommand {
+public class Sum extends AbstractCommand {
 
     @Autowired
     RecordService recordService;
 
-    private static String commandIdentifier = "history";
-    private static String description = "Вывести историю затрат.";
+    private static String commandIdentifier = "sum";
+    private static String description = "Вывести общую сумму затрат.";
 
 
-    public History() {
-        super(History.commandIdentifier, History.description);
+    public Sum() {
+        super(Sum.commandIdentifier, Sum.description);
     }
 
     @Override
@@ -32,20 +32,18 @@ public class History extends AbstractCommand {
 
         List<Record> recordList = recordService.getByUserId(new Long(user.getId()) );
 
-        SimpleDateFormat format= new SimpleDateFormat("dd.MM");
+        Double rouble = 0.0;
+        Double dollar = 0.0;
 
-        StringBuilder stringBuilder = new StringBuilder("");
-        for (Record record : recordList){
-            stringBuilder.append(format.format(record.getDate()) + " "
-                    + record.getSum() + " "
-                    + record.getCurrency() + " "
-                    + record.getDescription() + "\n");
+        for ( Record record : recordList){
+            if (record.getCurrency() == Currency.USD){
+                dollar += record.getSum();
+            } else {
+                rouble += record.getSum();
+            }
         }
 
-        String result = stringBuilder.toString();
-        if (result.length() == 0){
-            result = "Записей нет";
-        }
+        String result = "Вы потратили " + dollar + " USD и " + rouble + " BYN.";
 
         sendAnswer(absSender, chat.getId(),result);
     }

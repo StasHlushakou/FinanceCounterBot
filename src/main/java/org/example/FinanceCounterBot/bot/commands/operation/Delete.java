@@ -25,8 +25,7 @@ public class Delete extends AbstractCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
 
-        recordService.removeAll();
-
+        recordService.removeAllByUserId(new Long(user.getId()));
         sendAnswer(absSender, chat.getId(), "Все записи удалены");
     }
 }
