@@ -4,6 +4,7 @@ import org.example.FinanceCounterBot.entity.Record;
 import org.example.FinanceCounterBot.repository.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,8 +23,9 @@ public class RecordService {
         recordRepository.save(record);
     }
 
+    @Transactional
     public void removeAllByUserId(Long userId){
-        recordRepository.deleteAllByUserId(userId);
+        recordRepository.deleteByUserId(userId);
     }
 
 
