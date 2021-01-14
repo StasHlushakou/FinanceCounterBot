@@ -12,7 +12,6 @@ public class Help extends AbstractCommand {
     private static String commandIdentifier = "help";
     private static String description = "Помощь";
 
-
     public Help() {
         super(Help.commandIdentifier, Help.description);
     }
@@ -25,8 +24,6 @@ public class Help extends AbstractCommand {
         } else if (user.getFirstName() != null){
             userName = user.getFirstName();
         }
-
-
         sendAnswer(absSender, chat.getId(),
                 "Формат ввода данных:\n\n" +
                         "сумма\n" +

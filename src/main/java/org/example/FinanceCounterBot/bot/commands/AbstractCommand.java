@@ -11,7 +11,6 @@ public abstract class AbstractCommand extends BotCommand {
         super(commandIdentifier, description);
     }
 
-
     protected void sendAnswer(AbsSender absSender, Long chatId, String text) {
         SendMessage message = new SendMessage();
         message.enableMarkdown(true);

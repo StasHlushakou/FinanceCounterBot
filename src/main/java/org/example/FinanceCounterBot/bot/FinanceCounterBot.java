@@ -15,10 +15,8 @@ import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingC
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 @Component
 public class FinanceCounterBot extends TelegramLongPollingCommandBot {
@@ -54,7 +52,6 @@ public class FinanceCounterBot extends TelegramLongPollingCommandBot {
 
     @Override
     public void processNonCommandUpdate(Update update) {
-        // We check if the update has a message and the message has text
         if (update.hasMessage() && update.getMessage().hasText()) {
 
             String inputText = update.getMessage().getText();
@@ -95,13 +92,12 @@ public class FinanceCounterBot extends TelegramLongPollingCommandBot {
             }
 
             try {
-                execute(message); // Call method to send the message
+                execute(message);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
         }
     }
-
 
     @Override
     public void onRegister() {
