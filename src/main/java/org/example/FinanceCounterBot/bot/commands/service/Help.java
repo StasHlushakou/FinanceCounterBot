@@ -27,7 +27,7 @@ public class Help extends AbstractCommand {
         sendAnswer(absSender, chat.getId(),
                 "Формат ввода данных:\n\n" +
                         "сумма\n" +
-                        "указатель валюты (р/r - BYN д/$/d - USD)\n" +
+                        "указатель валюты (р/r - BYN   д/$/d - USD)\n" +
                         "описание (опционально)\n\n" +
                 "Все значения должны быть разделены пробелами\n" +
                 "Список команд:\n" +

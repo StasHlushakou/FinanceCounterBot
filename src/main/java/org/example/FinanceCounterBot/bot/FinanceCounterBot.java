@@ -60,8 +60,8 @@ public class FinanceCounterBot extends TelegramLongPollingCommandBot {
             Long userId = update.getMessage().getChatId();
 
             inputText.trim();
-            if (inputText.matches("\\d+[.]{0,1}\\d*\\s+[рд$]\\s+.*") ||
-                    inputText.matches("\\d+[.]{0,1}\\d*\\s+[рд$]")){
+            if (inputText.matches("\\d+[.]{0,1}\\d*\\s+[рд$rd]\\s+.*") ||
+                    inputText.matches("\\d+[.]{0,1}\\d*\\s+[рд$rd]")){
                 Record record = new Record();
                 record.setUserId(userId);
 
@@ -69,7 +69,7 @@ public class FinanceCounterBot extends TelegramLongPollingCommandBot {
 
                 record.setSum(new Double(words[0]));
 
-                if (words[1].equals("р")){
+                if (words[1].equals("р") || words[1].equals("r")){
                     record.setCurrency(Currency.BYN);
                 } else {
                     record.setCurrency(Currency.USD);
@@ -86,9 +86,12 @@ public class FinanceCounterBot extends TelegramLongPollingCommandBot {
                 recordService.addRecord(record);
                 message.setText("ок");
             } else{
-                message.setText("Неверный формат строки.\n" +
-                        "Правильный формат : [сумма] [уазатель валюты(р/д/$)] [описание(опционально)]\n" +
-                        "Все значения должны быть разделены пробелами");
+                message.setText("Неверный формат ввода данных.\n\n" +
+                        "Формат ввода данных:\n" +
+                        "сумма\n" +
+                        "указатель валюты (р/r - BYN   д/$/d - USD)\n" +
+                        "описание (опционально)\n\n" +
+                        "Все значения должны быть разделены пробелами\n");
             }
 
             try {
